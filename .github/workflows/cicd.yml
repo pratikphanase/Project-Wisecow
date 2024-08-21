@@ -1,0 +1,40 @@
+name: Build and Run Docker Image
+
+on:
+  push:
+    branches:
+      - dev
+  pull_request:
+    branches:
+      - dev
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Login to DockerHub
+      run: |
+        echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+
+    - name: Build the Docker image
+      run: |
+        docker build -t pratikphanase97/wisecow:latest .
+
+    - name: Push the Docker image to DockerHub
+      run: |
+        docker push pratikphanase97/wisecow:latest
+
+    - name: Run the Docker image on remote host
+      run: |
+        ssh -o StrictHostKeyChecking=no ubuntu@4.209.89.239 \
+          "docker pull pratikphanase97/wisecow:latest && \
+           docker run -d -p 4499:4499 pratikphanase97/wisecow:latest"
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
