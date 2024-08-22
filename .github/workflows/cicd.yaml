@@ -10,7 +10,7 @@ on:
 
 jobs:
   build:
-    runs-on: wisecow-Runner
+    runs-on: wisecow
     
     steps:
     - name: Checkout code
