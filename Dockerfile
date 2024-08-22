@@ -1,24 +1,24 @@
-# Use a minimal base image like Alpine
-FROM alpine:3.18
-
-# Install necessary packages: fortune, cowsay, and netcat
-RUN apk add --no-cache fortune cowsay netcat-openbsd
-
-# Create a non-root user and group, and switch to this user
-RUN addgroup -S appgroup && adduser -S appuser -G appgroup
-USER appuser
+FROM ubuntu:22.04
 
 # Set the working directory
-WORKDIR /app
+WORKDIR /home/ubuntu/app
 
-# Copy the wisecow.sh script to the container
-COPY --chown=appuser:appgroup wisecow.sh .
+# Copy the application files into the container
+COPY . .
 
-# Make the script executable
-RUN chmod +x wisecow.sh
+# Install necessary packages and update PATH
+RUN apt-get update && apt-get install -y \
+    fortune-mod \
+    cowsay \
+    netcat \
+    && chmod +x ./wisecow.sh \
+    && chmod 777 /home/ubuntu/app
 
-# Expose the port your application runs on
+# Set the PATH environment variable
+ENV PATH=$PATH:/usr/games
+
+# Expose the application port
 EXPOSE 4499
 
-# Run the script
+# Run the application
 CMD ["./wisecow.sh"]
