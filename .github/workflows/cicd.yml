@@ -33,7 +33,7 @@ jobs:
 
     - name: Run the Docker image on remote host
       run: |
-        ssh -o StrictHostKeyChecking=no ubuntu@4.209.89.239 \
+        ssh -o StrictHostKeyChecking=no ubuntu@3.82.212.255 \
           "docker pull pratikphanase97/wisecow:latest && \
            docker run -d -p 4499:4499 pratikphanase97/wisecow:latest"
       env:
