@@ -10,9 +10,8 @@ on:
 
 jobs:
   build:
-    runs-on: self-hosted
-    labels: ["wisecow"]  # Specify the label of your self-hosted runner
-    
+   runs-on: [self-hosted, wisecow]
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
