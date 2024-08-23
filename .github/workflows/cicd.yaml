@@ -32,9 +32,12 @@ jobs:
         docker push pratikphanase97/wisecow:latest
 
     - name: Run the Docker image on remote host
-      run: |
-        ssh -o StrictHostKeyChecking=no ubuntu@54.173.109.59 \
-          "docker pull pratikphanase97/wisecow:latest && \
-           docker run -d -p 4499:4499 pratikphanase97/wisecow:latest"
       env:
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        SECRET_ACCESS_KEY: ${{ secrets.SECRET_ACCESS_KEY }}
+        EC2_HOST: ${{ secrets.EC2_HOST }}
+      run: |
+        ssh -o StrictHostKeyChecking=no ubuntu@${{ env.EC2_HOST }} \
+          "docker pull pratikphanase97/wisecow:latest && \
+           docker run -d -p 4499:4499 pratikphanase97/wisecow:latest"
