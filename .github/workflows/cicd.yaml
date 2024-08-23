@@ -10,8 +10,11 @@ on:
 
 jobs:
   build:
-   runs-on: [self-hosted, wisecow]
-
+    runs-on: self-hosted
+    # Use runner group label if your runner has a custom label
+    # You can specify other labels if needed, like this:
+    # runs-on: [self-hosted, wisecow]
+    
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
