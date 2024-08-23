@@ -33,6 +33,12 @@ jobs:
     - name: Push the Docker image to DockerHub
       run: |
         docker push pratikphanase97/wisecow:latest
+    - name: delete old image
+      run: |
+        docker kill -f wisecow \
+        docker rmi -f pratikphanase97/wisecow:latest
+        
+
 
     - name: Run the Docker image on remote host
       env:
