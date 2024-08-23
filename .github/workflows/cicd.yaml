@@ -34,6 +34,12 @@ jobs:
       run: |
         docker push pratikphanase97/wisecow:latest
 
+    - name: Delete old container and image
+      run: |
+        docker kill wisecow || true
+        docker rm wisecow || true
+        docker rmi -f pratikphanase97/wisecow:latest || true
+
     - name: Run the Docker image on remote host
       env:
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
