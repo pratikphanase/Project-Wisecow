@@ -10,7 +10,8 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
+    labels: ["wisecow"]  # Specify the label of your self-hosted runner
     
     steps:
     - name: Checkout code
