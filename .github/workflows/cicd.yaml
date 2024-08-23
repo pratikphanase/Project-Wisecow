@@ -33,12 +33,12 @@ jobs:
     - name: Push the Docker image to DockerHub
       run: |
         docker push pratikphanase97/wisecow:latest
-    - name: delete old image
-      run: |
-        docker kill -f wisecow \
-        docker rmi -f pratikphanase97/wisecow:latest
-        
 
+    - name: Delete old container and image
+      run: |
+        docker kill wisecow || true
+        docker rm wisecow || true
+        docker rmi -f pratikphanase97/wisecow:latest || true
 
     - name: Run the Docker image on remote host
       env:
@@ -49,4 +49,5 @@ jobs:
       run: |
         ssh -o StrictHostKeyChecking=no ubuntu@${{ env.EC2_HOST }} \
           "docker pull pratikphanase97/wisecow:latest && \
-           docker run -d -p 4499:4499 pratikphanase97/wisecow:latest"
+           docker rm -f wisecow || true && \
+           docker run -d --name wisecow -p 4499:4499 pratikphanase97/wisecow:latest"
